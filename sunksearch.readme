@@ -1,0 +1,45 @@
+
+*************************************************************************************************************************************************************
+
+sunksearch
+
+SUNK finding program written by Xander Nuttle
+
+USE: To identify singly unique k-mers (SUNKs) from contig sequences, part of which are represented 
+in the reference genome, and part of which are absent from the reference. This program identifies singly
+unique 30-mers, though the value of k can be changed by changing the source code and recompiling. Total 
+length of contig sequences cannot exceed ~9.9999 Mbp, unless the source code is changed and recompiled.
+
+CALL: /net/gs/vol2/home/xnuttle/hydin/sunksearch <genomefile> <contigfile(s)> <refmaskfile> <outputfile>
+
+<genomefile>: a fasta file containing unmasked reference sequence
+	      (example: /net/gs/vol2/home/xnuttle/reference_genomes/hg19/hg19_all_unmasked.fasta)
+
+<contigfile(s)>: a fasta file (files) containing unmasked contig sequence
+	         (example: /net/eichler/vol18/jlhudd/chr1q21/rawFA/chr1q21.fasta)
+	         NOTE: multiple contig files can be input, provided the total length of contigs isn't too large (see above)
+			  NOTE: multiple contig sequences MUST be input in separate fasta files!
+
+<refmaskfile>: a bed file containing regions of the reference genome contained in any contig file inputted
+	       (example: /net/gs/vol2/home/xnuttle/hydin/chr1q21_in_ref.bed)
+	       NOTE: regions to mask must be in the same order as they appear in the genomefile, that is chr1 would come first if it is the first
+	       chromosome in the genomefile
+
+<outputfile>: a sunks file containing the contig name, location (base 1), and sequence of all contig positive-strand SUNKs
+	      (example: /net/gs/vol2/home/xnuttle/hydin/chr1q21.sunks)
+	      NOTE: this file is created upon calling this program, it does not exist beforehand
+
+RUNTIME: ~4-5 hours, should be run on puma
+
+ALGORITHM IN PSEUDOCODE:
+
+-read genome into character array, masking out regions specified in refmaskfile
+-create pointers to each position in genome character array, putting them in a pointer array
+-read contigs into separate character array
+-create pointers to each position in contig character array, putting them in same pointer array as above
+-sort pointers in pointer array based on sequences of 30-mers they point to (effectively sorts all 30-mers)
+-use a binary search to search sorted kmers for all contig 30-mers and their reverse complements
+-output all contig 30-mers that are present only once in sorted kmer list and have a reverse complement not present in sorted kmer list
+
+*************************************************************************************************************************************************************
+

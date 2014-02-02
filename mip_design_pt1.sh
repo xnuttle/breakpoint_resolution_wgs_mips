@@ -19,9 +19,9 @@ if [ $? -ne 0 ]
 	echo "DOWNLOAD ERROR! Attempt the download again by rerunning this script."
 	exit 1
 fi
-rm dummy*
+rm -f dummy*
 chmod u+w md5sum.txt
-rm md5sum*
+rm -f md5sum*
 gunzip *gz
 sed 's/prox/chrprox_shared/g' ../prox.fasta > chrprox_shared.fa
 for i in `ls *.fa`; do readlink -f $i; done > ../chromosomes.txt
