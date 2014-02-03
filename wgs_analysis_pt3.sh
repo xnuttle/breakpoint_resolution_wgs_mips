@@ -7,7 +7,7 @@ CURRENT_DIR=$(pwd)
 PARENT_DIR=$(dirname $CURRENT_DIR)
 BARCODE_KEY=$(basename $barcodefile)
 
-mv *fastq.gz ../fastqs
+mv *fastq.gz ../fastqs > /dev/null
 cd ../fastqs
 for i in $(cut -f1 $PARENT_DIR/$BARCODE_KEY); do mkdir $i; mv $i*fastq.gz $i; done
 for i in $(cut -f1 $PARENT_DIR/$BARCODE_KEY);
