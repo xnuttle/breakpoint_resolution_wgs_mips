@@ -1,10 +1,10 @@
 //Xander Nuttle
 //pickmips.c
-//Call: pickmips mipdesign_file SUNs_scored_file (int)number_of_paralogs_in_gene_family
+//Given a set of potential MIP targets to pick from and a set of scored SUNs for a given paralog, this program selects MIPs to order.
+//Call: ./pickmips mipdesign_file SUNs_scored_file (int)number_of_paralogs_in_gene_family
 //
 //Compiling command: gcc pickmips.c -o pickmips -lm $CPPFLAGS $LDFLAGS
 //
-//Given a set of potential MIP targets to pick from and a set of scored (or fake-scored) SUNs for a given paralog, this program selects MIPs to order.
 //The program systematically and aggressively selects MIPs to order. It attempts to pick the maximum number of MIPs that never target the same SUN
 //to cover as many SUNs as possible while prioritizing MIPs having high paralog-specificity. Several SUNs get a score of 0 simply because they are
 //located within masked sequence. However, most such SUNs are still useful for paralog-specific copy number genotyping. The program implements a
@@ -334,7 +334,7 @@ int main(int argc,char*argv[])
 		max_specificity=0;
 		for(i=0;i<nummips;i++)
 		{
-			if(((mips[i].mip_picked==0)||(mips[i].mip_picked==2))&&(mips[i].num_plogs_dist>max_specificity))
+			if((mips[i].mip_picked==0)&&(mips[i].num_plogs_dist>max_specificity))
 			{
 				max_specificity=mips[i].num_plogs_dist;
 			}
@@ -492,7 +492,6 @@ int main(int argc,char*argv[])
             }
           }
         }			
-				i=k-1;
 			}	
 		}
 	}
